@@ -11,6 +11,7 @@ mp_drawing = mp.solutions.drawing_utils
 # Open webcam feed
 cap = cv2.VideoCapture(0)
 
+
 # Use to calculate hand angle (angle of wrist to middle finger and center vertical line)
 def calculate_hand_angle(hand_landmarks):
     # Define wrist (landmark 0) and middle finger MCP (landmark 9)
@@ -42,21 +43,43 @@ def calculate_hand_angle(hand_landmarks):
 
 # Calculate Euclidean distance between two points.
 def calculate_distance(point1, point2):
+    """Calculate Euclidean distance between two points."""
     return math.sqrt((point1.x - point2.x) ** 2 + (point1.y - point2.y) ** 2)
+
+
+def is_in_line(base, middle, tip):
+    """
+    Check if three landmarks are in line:
+    the middle point should lie between the base and tip.
+    """
+    # Check if the middle point lies between the base and tip by comparing distances
+    return (
+            calculate_distance(base, middle) < calculate_distance(base, tip)
+            and calculate_distance(middle, tip) < calculate_distance(base, tip)
+    )
 
 # use to calculate straight fingers
 def count_fingers(hand_landmarks):
     count = 0
     wrist = hand_landmarks.landmark[0]  # Wrist as the reference point
 
-    # Thumb: Check if the distance from wrist to thumb tip is greater than to the IP joint (landmark 3)
-    if calculate_distance(wrist, hand_landmarks.landmark[4]) > calculate_distance(wrist, hand_landmarks.landmark[3]):
+    # Thumb: Check if the thumb is straight using both distance and alignment conditions
+    if (
+            calculate_distance(wrist, hand_landmarks.landmark[4]) > calculate_distance(wrist,
+                                                                                       hand_landmarks.landmark[3])
+            and is_in_line(hand_landmarks.landmark[2], hand_landmarks.landmark[3], hand_landmarks.landmark[4])
+    ):
         count += 1
 
-    # Other fingers (Index to Pinky): Compare distances from the wrist to finger tips vs. PIP joints
-    for tip, pip in [(8, 6), (12, 10), (16, 14), (20, 18)]:
-        if calculate_distance(wrist, hand_landmarks.landmark[tip]) > calculate_distance(wrist,
-                                                                                        hand_landmarks.landmark[pip]):
+    # Other fingers (Index to Pinky): Check distance and alignment for each finger
+    for base, middle, tip in [(5, 6, 8), (9, 10, 12), (13, 14, 16), (17, 18, 20)]:
+        if (
+                calculate_distance(wrist, hand_landmarks.landmark[tip]) > calculate_distance(wrist,
+                                                                                             hand_landmarks.landmark[
+                                                                                                 middle])
+                and is_in_line(hand_landmarks.landmark[base], hand_landmarks.landmark[middle],
+                               hand_landmarks.landmark[tip])
+        ):
             count += 1
 
     return count
