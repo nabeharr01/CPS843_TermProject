@@ -1,9 +1,13 @@
+__pycache__
+
 # get from https://www.kaggle.com/datasets/vignonantoine/mediapipe-processed-asl-dataset/data
 processed_combine_asl_dataset
 processed_combine_asl_dataset/**
+processed_combine_asl_dataset.zip
 
 # get from https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker
 hand_landmarker.task
 
 # scratch file
 test.py
+test.png
