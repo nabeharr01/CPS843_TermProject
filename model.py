@@ -5,7 +5,7 @@ from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
 from sklearn.preprocessing import LabelEncoder
 
-batch_size = 32
+batch_size = 128
 train_generator = DataGenerator(csv_file='mp-to-asl.csv', batch_size=batch_size)
 val_generator = DataGenerator(csv_file='mp-to-asl.csv', batch_size=batch_size, shuffle=False)
 
@@ -23,7 +23,7 @@ model = Sequential([
 
 model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
-model.fit(train_generator, validation_data=val_generator, epochs=30)
+model.fit(train_generator, validation_data=val_generator, epochs=15)
 
 label_encoder = LabelEncoder()
 label_encoder.classes_ = np.load("label_classes.npy", allow_pickle=True)

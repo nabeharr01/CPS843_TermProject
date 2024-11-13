@@ -11,6 +11,6 @@ with open('mp-to-asl.csv', newline='', mode='w+') as data:
         for file in files:
             writer.writerow([
                 os.path.join(path, file), 
-                path.split('\\')[-1].upper()
+                path.split('\\' if os.name == 'nt' else '/')[-1].upper()
             ])
     

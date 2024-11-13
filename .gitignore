@@ -11,3 +11,7 @@ hand_landmarker.task
 # scratch file
 test.py
 test.png
+
+# ask authors to get model
+mp-to-asl-cnn-model.h5
+mp-to-asl-cnn-model.keras
