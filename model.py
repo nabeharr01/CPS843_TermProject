@@ -25,23 +25,4 @@ model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=
 
 model.fit(train_generator, validation_data=val_generator, epochs=15)
 
-label_encoder = LabelEncoder()
-label_encoder.classes_ = np.load("label_classes.npy", allow_pickle=True)
-
-def preprocess_image(img_path):
-    img = keras.preprocessing.image.load_img(img_path, color_mode="grayscale", target_size=(400,400))
-    img_array = keras.preprocessing.image.img_to_array(img) / 255.0
-    return img_array
-
-def predict_image(img_path, model, label_encoder):
-    img_array = preprocess_image(img_path)
-    predictions = model.predict(img_array)
-    predicted_index = np.argmax(predictions, axis=1)
-    predicted_label = label_encoder.inverse_transform(predicted_index)
-
-    return predicted_label[0]
-
-img_path = 'test.png'
-predicted_label = predict_image(img_path, model, label_encoder)
-print(f"Predicted ASL letter/digit: {predicted_label}")
-
+model.save("mp-to-asl-cnn-model.keras")
