@@ -86,7 +86,7 @@ landmarker = HandLandmarker.create_from_options(options)
 cap = cv2.VideoCapture(0)
 start_time = time.time()
 
-loaded_model = keras.models.load_model("mp-to-asl-cnn-model.keras")
+loaded_model = keras.models.load_model("mp-to-asl-cnn-model2.keras")
 predictor = Predictor(loaded_model, "label_classes.npy")
 
 running_pred = ['A','A','A','A','A','A','A','A','A','A']
