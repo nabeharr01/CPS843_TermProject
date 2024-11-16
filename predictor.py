@@ -39,3 +39,12 @@ class Predictor:
         predicted_label = self.label_encoder.inverse_transform(predicted_index)
 
         return predicted_label[0]
+    
+    def predict_landmarks(self, landmarks):
+        assert landmarks.shape == (1,63), "Input must be have shape (1,63)"
+
+        predictions = self.model.predict(landmarks, verbose=0)
+        predicted_index = np.argmax(predictions, axis=1)
+        predicted_label = self.label_encoder.inverse_transform(predicted_index)
+
+        return predicted_label[0]
