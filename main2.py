@@ -18,13 +18,13 @@ mp_drawing = mp.solutions.drawing_utils
 
 output_image = np.zeros((640,480,3), np.uint8)
 black_image = np.zeros((400,400,3), np.uint8)
-landmarks = np.zeros((63,), np.float16)
+landmarks = np.zeros((63,), np.float32)
 
 def displayHandOnFrame(results, frame, timestamp):
 
     image_copy = np.copy(frame.numpy_view())
     black_image_new = np.zeros((400,400,3), np.uint8)
-    landmarks_new = np.zeros((63,), np.float16)
+    landmarks_new = np.zeros((63,), np.float32)
 
     for hand_landmarks in results.hand_landmarks:
 
