@@ -117,8 +117,11 @@ try:
 
         # Draw the GUI
         display_frame = output_image.copy()
+        cv2.rectangle(display_frame, (10,60), (200, 25), (0,0,0), -1)
         cv2.putText(display_frame, f"Detected: {most_frequent_letter}", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+        cv2.rectangle(display_frame, (10,410), (200, 375), (0,0,0), -1)
         cv2.putText(display_frame, f"Text: {current_text}", (10, 400), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+        cv2.rectangle(display_frame, (10,460), (500, 430), (0,0,0), -1)
         cv2.putText(display_frame, "Press SPACE to add letter, 'C' to clear, 'Q' to quit", (10, 450), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 1)
 
         # Show the frame
