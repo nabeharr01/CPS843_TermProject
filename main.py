@@ -24,7 +24,7 @@ HandLandmarkerOptions = vision.HandLandmarkerOptions
 HandLandmarkerResult = vision.HandLandmarkerResult
 VisionRunningMode = vision.RunningMode
 
-# MediaPipe Hands 
+# MediaPipe Hands drawing classes
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 
@@ -110,10 +110,10 @@ def displayHandOnFrame(results, frame, timestamp):
 # Set up hand landmarker
 options = HandLandmarkerOptions(
     base_options=BaseOptions(model_asset_path="hand_landmarker.task"),
-    running_mode=VisionRunningMode.LIVE_STREAM,
-    result_callback=displayHandOnFrame,
-    num_hands=1,
-    min_hand_detection_confidence=0.5,
+    running_mode=VisionRunningMode.LIVE_STREAM, # Set up landmarker for LIVE_STREAM (camera feed)
+    result_callback=displayHandOnFrame, # Callback function asynchronously called after detecting hand
+    num_hands=1, # Only ever detect 1 hand 
+    min_hand_detection_confidence=0.5, # Recommended values
     min_hand_presence_confidence=0.5,
     min_tracking_confidence=0.5
 )
