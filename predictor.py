@@ -35,7 +35,7 @@ class Predictor:
     def predict_image_array(self, img_array):
         processed_array = self.__preprocess_image_array(img_array)
         predictions = self.model.predict(processed_array, verbose=0)
-        predicted_index = np.argmax(predictions, axis=1)
+        predicted_index = [max(0, np.argmax(predictions, axis=1)[0] - 10)]
         predicted_label = self.label_encoder.inverse_transform(predicted_index)
 
         return predicted_label[0]

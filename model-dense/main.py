@@ -8,7 +8,7 @@ from mediapipe.framework.formats import landmark_pb2
 from predictor import Predictor
 from collections import deque
 
-# Mediapipe and TensorFlow setup
+# Set up MediaPipe task API
 BaseOptions = mp.tasks.BaseOptions
 HandLandmarker = vision.HandLandmarker
 HandLandmarkerOptions = vision.HandLandmarkerOptions
@@ -20,18 +20,16 @@ mp_drawing = mp.solutions.drawing_utils
 
 # Variables for drawing and predictions
 output_image = np.zeros((640, 480, 3), np.uint8)
-black_image = np.zeros((400, 400, 3), np.uint8)
 landmarks = np.zeros((63,), np.float32)
 current_text = ""
 rolling_buffer = deque(maxlen=10)
 
 # Function to process hand detection and draw on the frame
 def displayHandOnFrame(results, frame, timestamp):
-    global output_image, black_image, landmarks
+    global output_image, landmarks
 
     image_copy = np.copy(frame.numpy_view())
-    black_image_new = np.zeros((400, 400, 3), np.uint8)
-    landmarks_new = np.zeros((63,), np.float32)
+    landmarks_flattened = np.zeros((63,), np.float32)
 
     for hand_landmarks in results.hand_landmarks:
         hand_landmarks_proto = landmark_pb2.NormalizedLandmarkList()
@@ -55,28 +53,19 @@ def displayHandOnFrame(results, frame, timestamp):
         box_width, box_height = x_max - x_min, y_max - y_min
         scale_factor = 400 * 0.9 / max(box_width, box_height)
 
-        translated_landmarks = []
+        bound_landmarks = []
         for lm in hand_landmarks:
             x = (lm.x - x_min) * scale_factor
             y = (lm.y - y_min) * scale_factor
             x += (400 - (box_width * scale_factor)) / 2
             y += (400 - (box_height * scale_factor)) / 2
-            translated_landmarks.append(landmark_pb2.NormalizedLandmark(x=x / 400, y=y / 400, z=lm.z))
+            bound_landmarks.append(landmark_pb2.NormalizedLandmark(x=x / 400, y=y / 400, z=lm.z))
 
-        landmark_list = landmark_pb2.NormalizedLandmarkList(landmark=translated_landmarks)
-        mp_drawing.draw_landmarks(
-            black_image_new,
-            landmark_list,
-            mp_hands.HAND_CONNECTIONS,
-            mp.solutions.drawing_styles.get_default_hand_landmarks_style(),
-            mp.solutions.drawing_styles.get_default_hand_connections_style()
-        )
-
-        landmarks_new = np.array([value for landmark in landmark_list.landmark for value in (landmark.x, landmark.y, landmark.z)])
+        landmark_list = landmark_pb2.NormalizedLandmarkList(landmark=bound_landmarks)
+        landmarks_flattened = np.array([value for landmark in landmark_list.landmark for value in (landmark.x, landmark.y, landmark.z)])
 
     output_image = image_copy
-    black_image = black_image_new
-    landmarks = landmarks_new
+    landmarks = landmarks_flattened
 
 # Set up hand landmarker
 options = HandLandmarkerOptions(
