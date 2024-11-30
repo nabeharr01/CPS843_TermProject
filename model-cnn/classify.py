@@ -32,4 +32,4 @@ labels = data['label'].values # Get labels
 label_encoder = LabelEncoder()
 label_encoder.fit(labels)
 # Save npy file for later, when using the trained CNN and needing encoded output -> labels
-np.save("label_classes.npy", label_encoder.classes_)
+np.save("label_classes_cnn.npy", label_encoder.classes_)

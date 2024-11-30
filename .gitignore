@@ -1,15 +1,13 @@
 __pycache__
 
 # get from https://www.kaggle.com/datasets/vignonantoine/mediapipe-processed-asl-dataset/data
-processed_combine_asl_dataset
-processed_combine_asl_dataset/**
-processed_combine_asl_dataset.zip
+processed_combine_asl_dataset*
 asl_dataset*
 
 # get from https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker
 hand_landmarker.task
 
-# scratch file
+# scratch files
 test.py
 test.png
 
@@ -17,7 +15,9 @@ test.png
 mp-landmarks-to-asl.csv
 mp-to-asl.csv
 
+# label encoders
+label_classes*
+
 # ask authors to get models
-mp-to-asl-cnn-model*.h5
 mp-to-asl-cnn-model*.keras
-mp-landmarks-to-asl-nn.keras
+mp-to-asl-dense-model*.keras

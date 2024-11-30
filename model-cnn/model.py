@@ -65,4 +65,4 @@ with tf.device('/gpu:0'):
     # Train with batch generators; for 10 epochs; with learning rate reduction
     model.fit(train_generator, validation_data=val_generator, epochs=10, callbacks=[reduce_lr])
 
-model.save("mp-to-asl-cnn-model.keras") # Save model for later application
+model.save("MP-to-ASL-CNN-model.keras") # Save model for later application
